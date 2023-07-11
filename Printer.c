@@ -7,6 +7,9 @@
 #include "tieto_cpu_tracker.h"	//header file for this project
 
 void* PrinterTask(){
+	pthread_mutex_lock(&mutexBuffer);	//locking thread into mutex to solve pcp
+	
+	pthread_mutex_unlock(&mutexBuffer);	//locking thread into mutex to solve pcp
 	printf("PrinterTask Successfull\n");
 	return 0;
 }
