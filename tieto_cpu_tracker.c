@@ -6,10 +6,12 @@
 #include <semaphore.h>	//lib for semaphores to use un producer-consumer-problem
 #include "tieto_cpu_tracker.h"	//header file for this project
 
-struct cpuStatisticsStruct cpuStatistics[maximumCpuNumber];
+struct cpuStatisticsStruct cpuStatistics[maximumCpuNumber];	//array of structures defined inheader file to be used as buffer-shared memmory between threads
+int cpuNumber = 0;	//number of cpus in shared memmory - cpuStatistics
 pthread_mutex_t mutexBuffer;	//mutex for producer-consumer problem solution
 sem_t producerSemaphore;	//creating a semaphore for reader thread (producer)
 sem_t consumerSemaphore;	//creating a semaphore for analyzer thread (consumer)
+int stopFlag = 0; // Flag to control the loop condition
 
 int main()
 {	

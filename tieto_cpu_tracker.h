@@ -12,6 +12,9 @@ extern pthread_mutex_t mutexBuffer;	//forward-declare of mutex in tieto_cpu_trac
 extern sem_t producerSemaphore;	//forward-declare of a semaphore for reader thread (producer)
 extern sem_t consumerSemaphore;	//forward-declare of a semaphore for analyzer thread (consumer)
 
+extern int stopFlag; // Flag to control the loop condition
+extern int cpuNumber;	//number of cpus in shared memmory - cpuStatistics
+
 struct cpuStatisticsStruct
 {
 	unsigned long long user;
