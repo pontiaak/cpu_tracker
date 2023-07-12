@@ -6,16 +6,15 @@
 #include <pthread.h>	//lib for threads
 #include <string.h>
 #include "tieto_cpu_tracker.h"	//header file for this project
-#include <unistd.h>	//temporary for sleep function
+#include <unistd.h>	//lib for sleep function
 
 
 void* ReaderTask(){
 
-	//int cpuArrayIndex = 0;	//index for currently processed line of cpu statistics being processed into a structure
 	char fileLine[maximumLineLength];
 
 	while(!stopFlag){	//while loop to keep thread functioning
-		sleep(1);	//temporary sleep function for ability to better log output during developing
+		usleep(250000); //250 milliseconds - sleep function to being able to gather sets of cpu stats with interval
 		cpuNumber = 0;	//temporary loop until better way is implimented
 		FILE* file = fopen("/proc/stat", "r");	//opening /proc/stat with atribute for only reading ("r")
 		if (file == NULL) {	//catching an issue
