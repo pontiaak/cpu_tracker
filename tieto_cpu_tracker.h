@@ -2,17 +2,19 @@
 #include <stdlib.h>
 #include <pthread.h>	//lib for threads
 #include <string.h>
+#include <signal.h>	//lib for handling signals
 #include <semaphore.h>	//lib for semaphores to use un producer-consumer-problem
 
 void* ReaderTask();	//Task for Reader thread - is a "producer"
 void* AnalyzerTask();	//Task for Analyzer thread - is a "consumer"
 void* PrinterTask();	//Task for Printer thread
+void SigtermHandler(int signum);
 
 extern pthread_mutex_t mutexBuffer;	//forward-declare of mutex in tieto_cpu_tracker.c for producer-consumer problem solution
 extern sem_t producerSemaphore;	//forward-declare of a semaphore for reader thread (producer)
 extern sem_t consumerSemaphore;	//forward-declare of a semaphore for analyzer thread (consumer)
 
-extern int stopFlag; // Flag to control the loop condition
+extern volatile sig_atomic_t terminationRequest;	//atomic flag, it is set to 1 to start closing the application gently
 extern int cpuNumber;	//number of cpus in shared memmory - cpuStatistics
 
 struct cpuStatisticsStruct

@@ -13,7 +13,7 @@ void* ReaderTask(){
 
 	char fileLine[maximumLineLength];
 
-	while(!stopFlag){	//while loop to keep thread functioning
+	while(!terminationRequest){	//while loop to keep thread functioning
 		usleep(250000); //250 milliseconds - sleep function to being able to gather sets of cpu stats with interval
 		cpuNumber = 0;	//temporary loop until better way is implimented
 		FILE* file = fopen("/proc/stat", "r");	//opening /proc/stat with atribute for only reading ("r")
@@ -46,6 +46,5 @@ void* ReaderTask(){
 		sem_post(&consumerSemaphore);	//incrimenting semaphore, thus telling the wait() in analyzer thread that reading of this data packege is done and it can start analyzing it
 		fclose(file);
 	}
-	printf("ReaderTask Successfull\n");
-	return 0;
+	pthread_exit(NULL);
 }

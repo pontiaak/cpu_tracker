@@ -14,7 +14,7 @@ void* AnalyzerTask(){
 	unsigned long long idle, nonIdle, total, totald, idled, cpuPercentage;
 	unsigned long long prevIdle[maximumCpuNumber], prevTotal[maximumCpuNumber];	//these are set to maximumCpuNumber and not cpuNumber not to cause problems
 	
-	while(!stopFlag){	//while loop to keep thread functioning
+	while(!terminationRequest){	//while loop to keep thread functioning
 		sem_wait(&consumerSemaphore);	//waiting until reader thread finishes reading all cpu's data, writes it to the buffer structure and thus, incriments this semaphore
 		pthread_mutex_lock(&mutexBuffer);	//locking thread into mutex to solve pcp
 		
@@ -61,5 +61,5 @@ void* AnalyzerTask(){
 		sem_post(&producerSemaphore);	//incrimenting semaphore, thus telling the wait() in reader thread that analyzing of this data packet is done and it can start to read next package of cpu data
 		usleep(250000); //250 milliseconds - sleep function to being able to gather sets of cpu stats with interval
 	}
-	return 0;
+	pthread_exit(NULL);
 }
