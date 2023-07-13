@@ -12,6 +12,8 @@ pthread_mutex_t mutexBuffer;	//mutex for producer-consumer problem solution
 sem_t producerSemaphore;	//creating a semaphore for reader thread (producer)
 sem_t consumerSemaphore;	//creating a semaphore for analyzer thread (consumer)
 int stopFlag = 0; // Flag to control the loop condition
+unsigned long long cpuUsageSumm[maximumCpuNumber] = {0};	//array to act as buffer containing summ of multiple sets of cpu usage statistics of all processors to be later devided by cpuUsageSetsNumber during the printer thread to present avarage cpu usage for 1s
+int cpuUsageSetsNumber = -1;	//number of sets of data aggregated during 1second, starts with -1 because the first measurment set is alone and thus cannot be used to calculate percantage usage, we need to compare two sets
 
 int main()
 {	

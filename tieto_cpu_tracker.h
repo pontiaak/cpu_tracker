@@ -33,4 +33,5 @@ struct cpuStatisticsStruct
 #define maximumCpuNumber 256	//defining maximum number of cpus a system can have for an array of structures cpuStatistics
 
 extern struct cpuStatisticsStruct cpuStatistics[maximumCpuNumber];	//forward-declare creation of an array of structures to store all cpu's statistics during Reader thread to later pass to Analyzer thread
-
+extern unsigned long long cpuUsageSumm[maximumCpuNumber];	//array to act as buffer containing summ of multiple sets of cpu usage statistics of all processors to be later devided by cpuUsageSetsNumber during the printer thread to present avarage cpu usage for 1s
+extern int cpuUsageSetsNumber;	//number of sets of data aggregated during 1second

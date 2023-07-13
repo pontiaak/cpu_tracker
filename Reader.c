@@ -24,9 +24,6 @@ void* ReaderTask(){
 
 		sem_wait(&producerSemaphore);	//waiting until analizer thread finishes with last packet of data and incriments this semaphore
 		pthread_mutex_lock(&mutexBuffer);	//locking thread into mutex to solve pcp
-		while (fgets(fileLine, sizeof(fileLine), file))	//getting all the lines out the file
-		{
-
 			while (fgets(fileLine, sizeof(fileLine), file) && cpuNumber < maximumCpuNumber) {	//iterating by line whith "cpu" and adding all the statistics to the global structure
 				if (strncmp(fileLine, "cpu", 3) == 0)	//getting all the lines with cpu statistics - producing data into structure buffer
 				{			
@@ -45,8 +42,6 @@ void* ReaderTask(){
 					cpuNumber++;	//incrimenting to continue iterating
 				}
 			}
-		}
-		
 		pthread_mutex_unlock(&mutexBuffer);	//unlocking thread from mutex
 		sem_post(&consumerSemaphore);	//incrimenting semaphore, thus telling the wait() in analyzer thread that reading of this data packege is done and it can start analyzing it
 		fclose(file);

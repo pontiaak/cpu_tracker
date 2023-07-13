@@ -20,18 +20,19 @@ void* AnalyzerTask(){
 		
 		
 		for (int i = 0; i < cpuNumber; i++) {
-			printf("CPU %d:\n", i);
-			//printf("User: %llu\n", cpuStatistics[i].user);
-			//printf("Nice: %llu\n", cpuStatistics[i].nice);
-			//printf("System: %llu\n", cpuStatistics[i].system);
-			//printf("Idle: %llu\n", cpuStatistics[i].idle);
-			//printf("iowait: %llu\n", cpuStatistics[i].iowait);
-			//printf("irq: %llu\n", cpuStatistics[i].irq);
-			//printf("softirq: %llu\n", cpuStatistics[i].softirq);
-			//printf("steal: %llu\n", cpuStatistics[i].steal);
-			//printf("guest: %llu\n", cpuStatistics[i].guest);
-			//("guest_nice: %llu\n", cpuStatistics[i].guest_nice);
-			//printf("\n");
+			//in case you want to see deatailed statistics for each cpu
+			/*printf("CPU %d:   user: %llu   ", i-1,cpuStatistics[i].user);
+			printf("User: %llu\n", cpuStatistics[i].user);
+			printf("Nice: %llu\n", cpuStatistics[i].nice);
+			printf("System: %llu\n", cpuStatistics[i].system);
+			printf("Idle: %llu\n", cpuStatistics[i].idle);
+			printf("iowait: %llu\n", cpuStatistics[i].iowait);
+			printf("irq: %llu\n", cpuStatistics[i].irq);
+			printf("softirq: %llu\n", cpuStatistics[i].softirq);
+			printf("steal: %llu\n", cpuStatistics[i].steal);
+			printf("guest: %llu\n", cpuStatistics[i].guest);
+			("guest_nice: %llu\n", cpuStatistics[i].guest_nice);
+			printf("\n");*/
 				
 			idle = cpuStatistics[i].idle + cpuStatistics[i].iowait;
 			nonIdle = cpuStatistics[i].user + cpuStatistics[i].nice + cpuStatistics[i].system + cpuStatistics[i].irq + cpuStatistics[i].softirq + cpuStatistics[i].steal;
@@ -39,23 +40,22 @@ void* AnalyzerTask(){
 			
 			if(prevIdle[i]==0 || prevTotal[i]==0)	//this scenario means this is a first time and we have only one set of data, and thus need to skip
 			{
-				printf("\nskipped\n");
+				//we skip the first set of data because it has nothing to compare to
 				prevIdle[i] = idle;
 				prevTotal[i] = total;
 			}else{
 				totald = total - prevTotal[i];
-				//printf("\n %llu = %llu - %llu",totald, total, prevTotal[i]);	//this is a small test
 				idled = idle - prevIdle[i];
-				//printf("\n %llu = %llu - %llu",idled, idle, prevIdle[i]);	//this is a small test
 				cpuPercentage = (double)(totald - idled) / totald*100;
-				printf("CPU Percentage usage = %llu | %llu %llu \n\n",cpuPercentage,totald,idled);
 				prevIdle[i] = idle;
 				prevTotal[i] = total;
+				cpuUsageSumm[i] += cpuPercentage;	//array to act as buffer containing summ of multiple sets of cpu usage statistics of all processors to be later devided by cpuUsageSetsNumber during the printer thread to present avarage cpu usage for 1s
+				//printf("CPU Percentage usage = %llu | %llu %llu | cpuSumm = %llu %d\n",cpuPercentage,totald,idled,cpuUsageSumm[i],cpuUsageSetsNumber);
 			}
 			
 
 		}
-		
+		cpuUsageSetsNumber += 1;	//counts numbers of sets of data summed into cpuUsageSumm[] to later in printer devide it by this number to get avarage
 		
 		pthread_mutex_unlock(&mutexBuffer);	//locking thread into mutex to solve pcp
 		sem_post(&producerSemaphore);	//incrimenting semaphore, thus telling the wait() in reader thread that analyzing of this data packet is done and it can start to read next package of cpu data
