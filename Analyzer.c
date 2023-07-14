@@ -50,7 +50,6 @@ void* AnalyzerTask(){
 				prevIdle[i] = idle;
 				prevTotal[i] = total;
 				cpuUsageSumm[i] += cpuPercentage;	//array to act as buffer containing summ of multiple sets of cpu usage statistics of all processors to be later devided by cpuUsageSetsNumber during the printer thread to present avarage cpu usage for 1s
-				//printf("CPU Percentage usage = %llu | %llu %llu | cpuSumm = %llu %d\n",cpuPercentage,totald,idled,cpuUsageSumm[i],cpuUsageSetsNumber);
 			}
 			
 

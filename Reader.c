@@ -19,7 +19,9 @@ void* ReaderTask(){
 		FILE* file = fopen("/proc/stat", "r");	//opening /proc/stat with atribute for only reading ("r")
 		if (file == NULL) {	//catching an issue
 			perror("Failed to open /proc/stat");
-			return 0;
+			sem_post(&loggerSemaphore);	//waking up logger
+			loggerMessage = 9;	//logger message 9 means "Reader thread failed to open /proc/stat"
+			terminationRequest = 1;
 		}
 
 		sem_wait(&producerSemaphore);	//waiting until analizer thread finishes with last packet of data and incriments this semaphore
