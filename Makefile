@@ -3,10 +3,10 @@ CC = gcc
 CFLAGS = -Wall -Wextra -lpthread
 
 final:
-	$(CC) tieto_cpu_tracker.c Reader.c Analyzer.c Printer.c Sigterm.c -o cpu_tracker_app $(CFLAGS)
+	$(CC) tieto_cpu_tracker.c Reader.c Analyzer.c Printer.c Watchdog.c Sigterm.c -o cpu_tracker_app $(CFLAGS)
 	
 test:
-	$(CC) unit_test.c Reader.c Analyzer.c Printer.c Sigterm.c -o auto_test_cpu_app $(CFLAGS)
+	$(CC) unit_test.c Reader.c Analyzer.c Printer.c Watchdog.c Sigterm.c -o auto_test_cpu_app $(CFLAGS)
 
 clean:
 	rm -rf cpu_tracker_app

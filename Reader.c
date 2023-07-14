@@ -42,6 +42,7 @@ void* ReaderTask(){
 					cpuNumber++;	//incrimenting to continue iterating
 				}
 			}
+		watchdogFlags[0]=1;	//flag for watchdog to know this thread is active, its inside mutex lock b.c. it's shared memory with watchdog
 		pthread_mutex_unlock(&mutexBuffer);	//unlocking thread from mutex
 		sem_post(&consumerSemaphore);	//incrimenting semaphore, thus telling the wait() in analyzer thread that reading of this data packege is done and it can start analyzing it
 		fclose(file);

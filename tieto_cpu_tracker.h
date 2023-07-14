@@ -8,6 +8,7 @@
 void* ReaderTask();	//Task for Reader thread - is a "producer"
 void* AnalyzerTask();	//Task for Analyzer thread - is a "consumer"
 void* PrinterTask();	//Task for Printer thread
+void* WatchdogTask();	//Task for Watchdog thread
 void SigtermHandler(int signum);
 
 extern pthread_mutex_t mutexBuffer;	//forward-declare of mutex in tieto_cpu_tracker.c for producer-consumer problem solution
@@ -37,3 +38,4 @@ struct cpuStatisticsStruct
 extern struct cpuStatisticsStruct cpuStatistics[maximumCpuNumber];	//forward-declare creation of an array of structures to store all cpu's statistics during Reader thread to later pass to Analyzer thread
 extern unsigned long long cpuUsageSumm[maximumCpuNumber];	//array to act as buffer containing summ of multiple sets of cpu usage statistics of all processors to be later devided by cpuUsageSetsNumber during the printer thread to present avarage cpu usage for 1s
 extern int cpuUsageSetsNumber;	//number of sets of data aggregated during 1second
+extern int watchdogFlags[4];	//the threads will need to set the corresponding [i] flag to 1 every 2 seconds to show the watchdog that they are active

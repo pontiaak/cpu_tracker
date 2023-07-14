@@ -56,7 +56,7 @@ void* AnalyzerTask(){
 
 		}
 		cpuUsageSetsNumber += 1;	//counts numbers of sets of data summed into cpuUsageSumm[] to later in printer devide it by this number to get avarage
-		
+		watchdogFlags[1]=1;	//flag for watchdog to know this thread is active, its inside mutex lock b.c. it's shared memory with watchdog
 		pthread_mutex_unlock(&mutexBuffer);	//locking thread into mutex to solve pcp
 		sem_post(&producerSemaphore);	//incrimenting semaphore, thus telling the wait() in reader thread that analyzing of this data packet is done and it can start to read next package of cpu data
 		usleep(250000); //250 milliseconds - sleep function to being able to gather sets of cpu stats with interval

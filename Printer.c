@@ -33,7 +33,7 @@ void* PrinterTask(){
 			cpuUsageSumm[i] = 0;
 		}
 		
-		
+		watchdogFlags[2]=1;	//flag for watchdog to know this thread is active, its inside mutex lock b.c. it's shared memory with watchdog
 		pthread_mutex_unlock(&mutexBuffer);	//locking thread into mutex to solve pcp
 	}
 	pthread_exit(NULL);
