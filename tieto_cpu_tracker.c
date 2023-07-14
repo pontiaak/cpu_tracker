@@ -24,6 +24,11 @@ int main()
         perror("Error installing SIGTERM handler");
         return EXIT_FAILURE;
 	}
+	if (signal(SIGINT, SigtermHandler) == SIG_ERR)
+	{
+        perror("Error installing SIGTERM handler");
+        return EXIT_FAILURE;
+	}
 	pthread_t threadReader, threadAnalyzer, threadPrinter;
 	int retReader, retAnalyzer, retPrinter;	//values as output of creating threads to check for success in their creation
 	pthread_mutex_init(&mutexBuffer,NULL);	//initializing mutex buffer for pcp
@@ -51,8 +56,7 @@ int main()
 	//checking for thread termination
 	sem_destroy(&producerSemaphore);
 	sem_destroy(&consumerSemaphore);
-	system("clear");	//clearing screen for improved user interface
-	printf("Gracefully exited the program by sigterm handler\n");	
+	printf("\nGracefully exited the program by sigterm handler\n");	
 	pthread_mutex_destroy(&mutexBuffer);	//destroing mutex buffer for pcp
 	return EXIT_SUCCESS;
 }

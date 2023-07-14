@@ -41,6 +41,7 @@ int main()
 	if (retPrinter != 0){printf("Problem encountered while creating Printer Thread\n"); return EXIT_FAILURE;}; /*else printf("Printer Thread Created Successfully\n");*/ 
 	
 	sleep(2);	//sleeping for two seconds to let the threads copleat initial data read and exchange and not to do tests on empty memory 
+	int turnOfAfterIterations = 0;
 	while(!terminationRequest)//loop waiting for termination signal to exit, untill then repeats to let threads work
 	{
 		pthread_mutex_lock(&mutexBuffer);	//locking the tests into mutex beacause they cannot check perform memory result control during the brief moment that memory is being manipulated
@@ -56,6 +57,12 @@ int main()
 		
 		
 		pthread_mutex_unlock(&mutexBuffer);	//unlocking thread from mutex
+		sleep(1);
+		turnOfAfterIterations +=1;
+		if(turnOfAfterIterations == 5)
+		{
+			terminationRequest=1;
+		}
 	}	
 	
 	pthread_join( threadReader, NULL);	//terminating thread
@@ -69,7 +76,7 @@ int main()
 	//checking for thread termination
 	sem_destroy(&producerSemaphore);
 	sem_destroy(&consumerSemaphore);
-	system("clear");	//clearing screen for improved user interface
+	//system("clear");	//clearing screen for improved user interface
 	printf("Gracefully exited the program by sigterm handler\n");	
 	pthread_mutex_destroy(&mutexBuffer);	//destroing mutex buffer for pcp
 	return EXIT_SUCCESS;

@@ -26,7 +26,7 @@ void* PrinterTask(){
 				printf("CPU Core %d:\t%.2f%%\n",i-1,cpuUsageAvarage);
 			}
 		}
-		printf("\n exit gently by \"pkill cpu_tracker_app\"\n");
+		printf("\n exit gently by pkill or ctrl+c\n");
 		cpuUsageSetsNumber=0;	//cleaning because this variable stores how many times we received a set of statistics from analyzer for each second, thus after this second we need to calculate anew for consecutive second
 		for (int i = 0; i < cpuNumber; i++)	//cleaning shared memory buffer storing summed up cpu usage statistics because we need to calculate anew for consecutive second
 		{
