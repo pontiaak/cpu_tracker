@@ -9,17 +9,20 @@
 
 	
 
-void* AnalyzerTask(){
+void* AnalyzerTask(void*)
+{
 	
 	unsigned long long idle, nonIdle, total, totald, idled, cpuPercentage;
 	unsigned long long prevIdle[maximumCpuNumber], prevTotal[maximumCpuNumber];	//these are set to maximumCpuNumber and not cpuNumber not to cause problems
 	
-	while(!terminationRequest){	//while loop to keep thread functioning
+	while(!terminationRequest)	//while loop to keep thread functioning
+	{
 		sem_wait(&consumerSemaphore);	//waiting until reader thread finishes reading all cpu's data, writes it to the buffer structure and thus, incriments this semaphore
 		pthread_mutex_lock(&mutexBuffer);	//locking thread into mutex to solve pcp
 		
 		
-		for (int i = 0; i < cpuNumber; i++) {
+		for (int i = 0; i < cpuNumber; i++)
+		{
 			//in case you want to see deatailed statistics for each cpu
 			/*printf("CPU %d:   user: %llu   ", i-1,cpuStatistics[i].user);
 			printf("User: %llu\n", cpuStatistics[i].user);

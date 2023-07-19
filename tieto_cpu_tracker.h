@@ -5,11 +5,11 @@
 #include <signal.h>	//lib for handling signals
 #include <semaphore.h>	//lib for semaphores to use un producer-consumer-problem
 
-void* ReaderTask();	//Task for Reader thread - is a "producer"
-void* AnalyzerTask();	//Task for Analyzer thread - is a "consumer"
-void* PrinterTask();	//Task for Printer thread
-void* WatchdogTask();	//Task for Watchdog thread
-void* LoggerTask();	//Task for Logger thread
+void* ReaderTask(void*);	//Task for Reader thread - is a "producer"
+void* AnalyzerTask(void*);	//Task for Analyzer thread - is a "consumer"
+void* PrinterTask(void*);	//Task for Printer thread
+void* WatchdogTask(void*);	//Task for Watchdog thread
+void* LoggerTask(void*);	//Task for Logger thread
 void SigtermHandler(int signum);
 
 extern pthread_mutex_t mutexBuffer;	//forward-declare of mutex in tieto_cpu_tracker.c for producer-consumer problem solution

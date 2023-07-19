@@ -7,11 +7,13 @@
 #include "tieto_cpu_tracker.h"	//header file for this project
 #include <unistd.h>	//lib for sleep function
 
-void* PrinterTask(){
+void* PrinterTask(void*)
+{
 
 	double cpuUsageAvarage;	
 	
-	while(!terminationRequest){	//while loop to keep thread functioning
+	while(!terminationRequest)	//while loop to keep thread functioning
+	{
 		sleep(1);
 		system("clear");	//clearing screen for improved user interface
 		pthread_mutex_lock(&mutexBuffer);	//locking thread into mutex to solve pcp

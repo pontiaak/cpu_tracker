@@ -8,9 +8,11 @@
 #include <unistd.h>	//lib for sleep function
 #include <time.h>	//lib for getting current time in order to make logs more readible and usefull
 
-void* LoggerTask(){
+void* LoggerTask(void*)
+{
 
-	while(!terminationRequest){
+	while(!terminationRequest)
+	{
 		sem_wait(&loggerSemaphore);	//waiting until any of other threads posts this semaphore, thus waking it up and printing message into a file, then it will wait once again
 		pthread_mutex_lock(&mutexBuffer);	//locking thread into mutex to solve pcp
 		FILE* loggerFile = fopen(loggerFilePath, "a");	//opening the defined in header path to file in which the logs will be stored with atribute for appending ("a")

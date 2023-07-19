@@ -9,15 +9,18 @@
 #include <unistd.h>	//lib for sleep function
 
 
-void* ReaderTask(){
+void* ReaderTask(void*)
+{
 
 	char fileLine[maximumLineLength];
 
-	while(!terminationRequest){	//while loop to keep thread functioning
+	while(!terminationRequest)	//while loop to keep thread functioning
+	{
 		usleep(250000); //250 milliseconds - sleep function to being able to gather sets of cpu stats with interval
 		cpuNumber = 0;	//temporary loop until better way is implimented
 		FILE* file = fopen("/proc/stat", "r");	//opening /proc/stat with atribute for only reading ("r")
-		if (file == NULL) {	//catching an issue
+		if (file == NULL)	//catching an issue
+		{
 			perror("Failed to open /proc/stat");
 			sem_post(&loggerSemaphore);	//waking up logger
 			loggerMessage = 9;	//logger message 9 means "Reader thread failed to open /proc/stat"
@@ -26,7 +29,8 @@ void* ReaderTask(){
 
 		sem_wait(&producerSemaphore);	//waiting until analizer thread finishes with last packet of data and incriments this semaphore
 		pthread_mutex_lock(&mutexBuffer);	//locking thread into mutex to solve pcp
-			while (fgets(fileLine, sizeof(fileLine), file) && cpuNumber < maximumCpuNumber) {	//iterating by line whith "cpu" and adding all the statistics to the global structure
+			while (fgets(fileLine, sizeof(fileLine), file) && cpuNumber < maximumCpuNumber)	//iterating by line whith "cpu" and adding all the statistics to the global structure
+			{
 				if (strncmp(fileLine, "cpu", 3) == 0)	//getting all the lines with cpu statistics - producing data into structure buffer
 				{			
 					sscanf(fileLine, "%*s %llu %llu %llu %llu %llu %llu %llu %llu %llu %llu",

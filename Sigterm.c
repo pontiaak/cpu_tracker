@@ -4,7 +4,8 @@
 #include <signal.h>
 #include "tieto_cpu_tracker.h"	//header file for this project
 
-void SigtermHandler(int signum) {
+void SigtermHandler(int signum)
+{
 	printf("Received SIGINT with signal number %d\n", signum);
  	terminationRequest = 1;
 }

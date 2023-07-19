@@ -7,9 +7,11 @@
 #include "tieto_cpu_tracker.h"	//header file for this project
 #include <unistd.h>	//lib for sleep function
 
-void* WatchdogTask(){
+void* WatchdogTask(void*)
+{
 	
-	while(!terminationRequest){
+	while(!terminationRequest)
+	{
 		sleep(2);	//Watchdog checks for 2 seconds, outside of lock not to stall application
 		pthread_mutex_lock(&mutexBuffer);	//locking thread into mutex to solve pcp
 		

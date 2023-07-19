@@ -34,11 +34,30 @@ int main()
 	
 
 	retReader = pthread_create( &threadReader, NULL, ReaderTask, NULL);	//creating reader thread, second atribute is NULL, ReaderTask is a function this thread accomplishes
-	if (retReader != 0){printf("Problem encountered while creating Reader Thread\n"); return EXIT_FAILURE;}; /*else printf("Reader Thread Created Successfully\n");*/ 
+	if (retReader != 0)
+	{
+		perror("Problem encountered while creating Reader Thread\n"); sem_post(&loggerSemaphore); loggerMessage = 4; terminationRequest = 1;
+	}
 	retAnalyzer = pthread_create( &threadAnalyzer, NULL, AnalyzerTask, NULL);	//creating analyzer thread, second atribute is NULL, AnalyzerTask is a function this thread accomplishes
-	if (retAnalyzer != 0){printf("Problem encountered while creating Analyzer Thread\n"); return EXIT_FAILURE;}; /*else printf("Analyzer Thread Created Successfully\n");*/
+	if (retAnalyzer != 0)
+	{
+		perror("Problem encountered while creating Analyzer Thread\n"); sem_post(&loggerSemaphore); loggerMessage = 5; terminationRequest = 1;
+	}
 	retPrinter = pthread_create( &threadPrinter, NULL, PrinterTask, NULL);	//creatin printer thread, second atribute is NULL, PrinterTask is a function this thread accomplishes
-	if (retPrinter != 0){printf("Problem encountered while creating Printer Thread\n"); return EXIT_FAILURE;}; /*else printf("Printer Thread Created Successfully\n");*/ 
+	if (retPrinter != 0)
+	{
+		perror("Problem encountered while creating Printer Thread\n"); sem_post(&loggerSemaphore); loggerMessage = 6; terminationRequest = 1;
+	}
+	retWatchdog = pthread_create( &threadWatchdog, NULL, WatchdogTask, NULL);	//creatin Watchdog thread, second atribute is NULL, WatchdogTask is a function this thread accomplishes
+	if (retWatchdog != 0)
+	{
+		perror("Problem encountered while creating Watchdog Thread\n"); sem_post(&loggerSemaphore); loggerMessage = 7; terminationRequest = 1;
+	}
+	retLogger = pthread_create( &threadLogger, NULL, LoggerTask, NULL);	//creatin Logger thread, second atribute is NULL, LoggerTask is a function this thread accomplishes
+	if (retLogger != 0)
+	{
+		perror("Problem encountered while creating Logger Thread\n"); sem_post(&loggerSemaphore); loggerMessage = 8; terminationRequest = 1;
+	}
 	
 	sleep(2);	//sleeping for two seconds to let the threads copleat initial data read and exchange and not to do tests on empty memory 
 	int turnOfAfterIterations = 0;
